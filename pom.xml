@@ -35,7 +35,7 @@
                         <environment>${mule.env}</environment>
                         <target>${anypoint.privatespace.name}</target>
                         <server>anypoint-exchange-v3</server>
-                        <applicationName>${project.artifactId}${app.url.env}</applicationName>
+                        <applicationName>${project.artifactId}</applicationName>
                         <releaseChannel>LTS</releaseChannel>
                         <replicas>${app.replicas}</replicas>
                         <vCores>${app.vCores}</vCores>
