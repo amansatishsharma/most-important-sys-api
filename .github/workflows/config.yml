@@ -18,11 +18,6 @@ on:
         description: 'Enter the repository name'
         required: true
         type: string
-      branch:
-        description: 'Branch to build'
-        required: true
-        default: 'dev'
-        type: string
       environment:
         description: "Deployment Environment"
         required: true
