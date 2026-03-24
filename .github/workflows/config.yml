@@ -83,7 +83,7 @@ jobs:
           repositories: >
             [
               {
-                "id": "Exchange-Deployment-Repository"",
+                "id": "Exchange-Deployment-Repository",
                 "url": "https://maven.anypoint.mulesoft.com/api/v3/maven",
                 "releases": { "enabled": "true" },
                 "snapshots": { "enabled": "true" }
