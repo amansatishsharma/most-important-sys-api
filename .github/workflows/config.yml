@@ -104,9 +104,23 @@ jobs:
             echo "APP_TAG=" >> $GITHUB_ENV
           fi
 
-      - name: Build, Publish to Exchange, and Deploy to CloudHub 2.0
+      - name: Publish Artifact to Anypoint Exchange
         run: |
-          mvn clean deploy -DskipTests -DmuleDeploy \
+          mvn clean deploy -DskipTests \
+          -D"mule.env"="${{ env.ENVIRONMENT }}" \
+          -D"app.vCores"="${{ inputs.vCore }}" \
+          -D"app.replicas"="${{ inputs.replicas }}" \
+          -D"app.url.env"="${{ env.APP_TAG }}" \
+          -D"anypoint.privatespace.name"="${{ env.TARGET }}" \
+          -D"connectedAppClientId"="${{ env.CONNECTED_APP_CLIENT_ID }}" \
+          -D"connectedAppClientSecret"="${{ env.CONNECTED_APP_CLIENT_SECRET }}" \
+          -D"connectedAppGrantType"="${{ env.GRANT_TYPE }}" \
+          -D"anypoint.platform.client_id"="${{ env.ANYPOINT_CLIENT_ID }}" \
+          -D"anypoint.platform.client_secret"="${{ env.ANYPOINT_CLIENT_SECRET }}"
+
+      - name: Deploy Application to CloudHub 2.0
+        run: |
+          mvn mule:deploy -DskipTests \
           -D"mule.env"="${{ env.ENVIRONMENT }}" \
           -D"app.vCores"="${{ inputs.vCore }}" \
           -D"app.replicas"="${{ inputs.replicas }}" \
