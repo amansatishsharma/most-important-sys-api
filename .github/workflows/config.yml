@@ -75,7 +75,7 @@ jobs:
           servers: >
             [
               {
-                "id": "Repository",
+                "id": "anypoint-exchange-v3",
                 "username": "~~~Client~~~",
                 "password": "${{ env.CONNECTED_APP_STRING }}"
               }
@@ -83,7 +83,7 @@ jobs:
           repositories: >
             [
               {
-                "id": "Exchange-Deployment-Repository",
+                "id": "anypoint-exchange-v3",
                 "url": "https://maven.anypoint.mulesoft.com/api/v3/maven",
                 "releases": { "enabled": "true" },
                 "snapshots": { "enabled": "true" }
