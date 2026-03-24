@@ -75,7 +75,7 @@ jobs:
           servers: >
             [
               {
-                "id": "anypoint-exchange-v3",
+                "id": "Repository",
                 "username": "~~~Client~~~",
                 "password": "${{ env.CONNECTED_APP_STRING }}"
               }
