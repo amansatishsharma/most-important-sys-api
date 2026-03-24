@@ -3,6 +3,7 @@
 <mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<global-property doc:name="Global Property" doc:id="e53d88eb-c542-4100-9c1b-7f198c949bef" name="env" value="dev" />
 	<flow name="most-important-sys-apiFlow" doc:id="4fe6849f-2752-4430-bab1-0e22c870985c" >
 		<scheduler doc:name="Scheduler" doc:id="e57ae990-ddb3-497f-9e37-a376e9c5ebf5" >
 			<scheduling-strategy >

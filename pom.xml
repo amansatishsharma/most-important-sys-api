@@ -47,6 +47,7 @@
                     <classifier>mule-application</classifier>
                     <cloudhub2Deployment>
                         <uri>${ch.deployment.uri}</uri>
+                        <environment>${mule.env}</environment>
                         <provider>${ch.deployment.provider}</provider>
                         <target>${ch.deployment.target}</target>
                         <javaVersion>${ch.deployment.java.version}</javaVersion>
