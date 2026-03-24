@@ -2,4 +2,13 @@
 
 <mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd"></mule>
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<flow name="most-important-sys-apiFlow" doc:id="4fe6849f-2752-4430-bab1-0e22c870985c" >
+		<scheduler doc:name="Scheduler" doc:id="e57ae990-ddb3-497f-9e37-a376e9c5ebf5" >
+			<scheduling-strategy >
+				<fixed-frequency frequency="1" timeUnit="HOURS"/>
+			</scheduling-strategy>
+		</scheduler>
+		<logger level="INFO" doc:name="Logger" doc:id="9ab3e0e6-6767-4b6c-a187-a9bf6c9e92cb" message="All Good!"/>
+	</flow>
+</mule>

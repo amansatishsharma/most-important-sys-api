@@ -1,13 +1,13 @@
 name: Build and Deploy
 
 env:
-  ANYPOINT_CLIENT_ID: ${{ secrets.AP_CLIENT_ID }}
-  ANYPOINT_CLIENT_SECRET: ${{ secrets.AP_CLIENT_SECRET }}
+  ANYPOINT_CLIENT_ID: ${{ secrets.APM_CLIENT_ID }}
+  ANYPOINT_CLIENT_SECRET: ${{ secrets.APM_CLIENT_SECRET }}
   CONNECTED_APP_STRING: ${{ secrets.CONNECTED_APP_STRING }}
   CONNECTED_APP_CLIENT_ID: ${{ secrets.CONNECTED_APP_CLIENT_ID }}
   CONNECTED_APP_CLIENT_SECRET: ${{ secrets.CONNECTED_APP_CLIENT_SECRET }}
-  GRANT_TYPE: ${{ secrets.GRANT_TYPE }}
-  PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+  GRANT_TYPE: ${{ vars.GRANT_TYPE }}
+  PAT: ${{ secrets.PAT }}
   TARGET: ${{ vars.TARGET }}
   ENVIRONMENT: "${{ inputs.environment }}"
 
@@ -29,8 +29,6 @@ on:
         type: choice
         options:
           - DEV
-          - UAT
-          - PROD
       vCore:
         description: "vCore on Deployment Target"
         required: true
@@ -71,9 +69,9 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          repository: 'UrbanLandInstitute/${{ inputs.repository }}'
+          repository: '${{ github.repository_owner }}/${{ inputs.repository }}'
           ref: '${{ inputs.branch }}'
-          token: "${{ env.GLOBAL_PAT_TOKEN }}"
+          token: "${{ env.PAT }}"
           fetch-depth: 0
 
       - name: Configure Maven settings
@@ -84,12 +82,7 @@ jobs:
               {
                 "id": "anypoint-exchange-v3",
                 "username": "~~~Client~~~",
-                "password": "${{ env.GLOBAL_CONNECTED_APP_STRING }}"
-              },
-              {
-                "id": "MuleRepository",
-                "username": "${{ env.GLOBAL_NEXUS_USERNAME }}",
-                "password": "${{ env.GLOBAL_NEXUS_PASSWORD }}"
+                "password": "${{ env.CONNECTED_APP_STRING }}"
               }
             ] 
           repositories: >
@@ -99,52 +92,28 @@ jobs:
                 "url": "https://maven.anypoint.mulesoft.com/api/v3/maven",
                 "releases": { "enabled": "true" },
                 "snapshots": { "enabled": "true" }
-              },
-              {
-                "id": "MuleRepository",
-                "url": "https://repository.mulesoft.org/nexus-ee/content/repositories/releases-ee/",
-                "releases": { "enabled": "true" },
-                "snapshots": { "enabled": "true" }
               }
             ]
 
-      - name: Set Maven Profile and App Tag
+      - name: Set App Tag
         run: |
-          if [[ "${{ inputs.repository }}" == *"exp-api"* ]]; then
-            echo "MAVEN_PROFILE=experience-service" >> $GITHUB_ENV
-          else
-            echo "MAVEN_PROFILE=non-experience-service" >> $GITHUB_ENV
-          fi
-          
           MULE_ENV=$(echo '${{ inputs.environment }}' | tr '[:upper:]' '[:lower:]')
-          if [[ "$MULE_ENV" == "dev" || "$MULE_ENV" == "uat" ]]; then
+          if [[ "$MULE_ENV" == "dev" ]]; then
             echo "APP_TAG=-$MULE_ENV" >> $GITHUB_ENV
           else
             echo "APP_TAG=" >> $GITHUB_ENV
           fi
 
-      - name: Publish to Exchange
+      - name: Build, Publish to Exchange, and Deploy to CloudHub 2.0
         run: |
-          mvn clean deploy -DskipTests \
-          -D"mule.env"="${{ env.GLOBAL_ENVIRONMENT }}" \
-          -D"mule.key"="${{ env.GLOBAL_ENCRYPTION_KEY }}" \
-          -D"connectedAppClientId"="${{ env.GLOBAL_CONNECTED_APP_CLIENT_ID }}" \
-          -D"connectedAppClientSecret"="${{ env.GLOBAL_CONNECTED_APP_CLIENT_SECRET }}" \
-          -D"connectedAppGrantType"="${{ env.GLOBAL_GRANT_TYPE }}" \
-          -P"${{ env.MAVEN_PROFILE }}"
-
-      - name: Deploy to CloudHub 2.0 (${{ inputs.environment }}) 
-        run: |
-          mvn deploy -DskipTests -DmuleDeploy \
-          -D"mule.env"="${{ env.GLOBAL_ENVIRONMENT }}" \
-          -D"mule.key"="${{ env.GLOBAL_ENCRYPTION_KEY }}" \
+          mvn clean deploy -DskipTests -DmuleDeploy \
+          -D"mule.env"="${{ env.ENVIRONMENT }}" \
           -D"app.vCores"="${{ inputs.vCore }}" \
           -D"app.replicas"="${{ inputs.replicas }}" \
           -D"app.url.env"="${{ env.APP_TAG }}" \
-          -D"anypoint.privatespace.name"="${{ env.GLOBAL_TARGET }}" \
-          -D"connectedAppClientId"="${{ env.GLOBAL_CONNECTED_APP_CLIENT_ID }}" \
-          -D"connectedAppClientSecret"="${{ env.GLOBAL_CONNECTED_APP_CLIENT_SECRET }}" \
-          -D"connectedAppGrantType"="${{ env.GLOBAL_GRANT_TYPE }}" \
-          -D"anypoint.platform.client_id"="${{ env.GLOBAL_ANYPOINT_CLIENT_ID }}" \
-          -D"anypoint.platform.client_secret"="${{ env.GLOBAL_ANYPOINT_CLIENT_SECRET }}" \
-          -P"${{ env.MAVEN_PROFILE }}"
+          -D"anypoint.privatespace.name"="${{ env.TARGET }}" \
+          -D"connectedAppClientId"="${{ env.CONNECTED_APP_CLIENT_ID }}" \
+          -D"connectedAppClientSecret"="${{ env.CONNECTED_APP_CLIENT_SECRET }}" \
+          -D"connectedAppGrantType"="${{ env.GRANT_TYPE }}" \
+          -D"anypoint.platform.client_id"="${{ env.ANYPOINT_CLIENT_ID }}" \
+          -D"anypoint.platform.client_secret"="${{ env.ANYPOINT_CLIENT_SECRET }}"
