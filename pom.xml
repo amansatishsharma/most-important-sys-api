@@ -51,7 +51,7 @@
                         <connectedAppGrantType>client_credentials</connectedAppGrantType>
                         <applicationName>${deployment.application.name}</applicationName>
                         <vCores>${app.vCores}</vCores>
-                        <replicas>${app.replicas}</replicas><deploymentSettings>
+                        <replicas>${app.replicas}</replicas>
                         <deploymentSettings>
                             <http>
                                 <inbound>
