@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Deploy to CloudHub 2.0
 
 env:
   ANYPOINT_CLIENT_ID: ${{ secrets.APM_CLIENT_ID }}
