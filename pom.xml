@@ -14,21 +14,15 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <app.runtime>4.9.4</app.runtime>
         <mule.maven.plugin.version>4.3.0</mule.maven.plugin.version>
-        <munit.version>3.1.0</munit.version>
-        <ch.deployment.uri>https://anypoint.mulesoft.com</ch.deployment.uri>
-        <ch.deployment.provider>MC</ch.deployment.provider>
-        <ch.deployment.target>Cloudhub-US-East-1</ch.deployment.target>
-        <ch.deployment.mule.version>4.9.4</ch.deployment.mule.version>
-        <ch.deployment.java.version>17</ch.deployment.java.version>
-        <ch.deployment.release.channel>LTS</ch.deployment.release.channel>
-        <ch.deployment.grant>client_credentials</ch.deployment.grant>
-        <ch.deployment.application.name>${project.artifactId}</ch.deployment.application.name>
-        <ch.deployment.replicas>1</ch.deployment.replicas>
-        <ch.deployment.vCores>0.1</ch.deployment.vCores>
-        <ch.deployment.forward.ssl.session>false</ch.deployment.forward.ssl.session>
-        <ch.deployment.last.mile.security>false</ch.deployment.last.mile.security>
-        <ch.deployment.generate.public.url>true</ch.deployment.generate.public.url>
-        <ch.http.port>8081</ch.http.port>
+        <deployment.provider>MC</deployment.provider>
+        <deployment.target>Cloudhub-US-East-1</deployment.target>
+        <deployment.mule.version>4.9.4</deployment.mule.version>
+        <deployment.java.version>17</deployment.java.version>
+        <deployment.release.channel>LTS</deployment.release.channel>
+        <deployment.application.name>${project.artifactId}</deployment.application.name>
+        <deployment.forward.ssl.session>false</deployment.forward.ssl.session>
+        <deployment.last.mile.security>false</deployment.last.mile.security>
+        <deployment.generate.public.url>false</deployment.generate.public.url>
     </properties>
     
     <build>
@@ -46,31 +40,24 @@
                 <configuration>
                     <classifier>mule-application</classifier>
                     <cloudhub2Deployment>
-                        <uri>${ch.deployment.uri}</uri>
                         <environment>${mule.env}</environment>
-                        <provider>${ch.deployment.provider}</provider>
-                        <target>${ch.deployment.target}</target>
-                        <javaVersion>${ch.deployment.java.version}</javaVersion>
-                        <releaseChannel>${ch.deployment.release.channel}</releaseChannel>
-                        <muleVersion>${ch.deployment.mule.version}</muleVersion>
+                        <provider>${deployment.provider}</provider>
+                        <target>${deployment.target}</target>
+                        <javaVersion>${deployment.java.version}</javaVersion>
+                        <releaseChannel>${deployment.release.channel}</releaseChannel>
+                        <muleVersion>${deployment.mule.version}</muleVersion>
                         <connectedAppClientId>${connectedAppClientId}</connectedAppClientId>
                         <connectedAppClientSecret>${connectedAppClientSecret}</connectedAppClientSecret>
                         <connectedAppGrantType>client_credentials</connectedAppGrantType>
-                        <applicationName>${ch.deployment.application.name}</applicationName>
-                        <replicas>${ch.deployment.replicas}</replicas>
-                        <vCores>${ch.deployment.vCores}</vCores>
-                        <properties>
-                            <http.port>${ch.http.port}</http.port>
-                            
-                        </properties>
+                        <applicationName>${deployment.application.name}</applicationName>
                         <deploymentSettings>
                             <http>
                                 <inbound>
-                                    <forwardSslSession>${ch.deployment.forward.ssl.session}</forwardSslSession>
-                                    <lastMileSecurity>${ch.deployment.last.mile.security}</lastMileSecurity>
+                                    <forwardSslSession>${deployment.forward.ssl.session}</forwardSslSession>
+                                    <lastMileSecurity>${deployment.last.mile.security}</lastMileSecurity>
                                 </inbound>
                             </http>
-                            <generateDefaultPublicUrl>${ch.deployment.generate.public.url}</generateDefaultPublicUrl>
+                            <generateDefaultPublicUrl>${deployment.generate.public.url}</generateDefaultPublicUrl>
                         </deploymentSettings>
                     </cloudhub2Deployment>
                 </configuration>
@@ -83,12 +70,6 @@
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-http-connector</artifactId>
             <version>1.10.3</version>
-            <classifier>mule-plugin</classifier>
-        </dependency>
-        <dependency>
-            <groupId>org.mule.connectors</groupId>
-            <artifactId>mule-sockets-connector</artifactId>
-            <version>1.2.5</version>
             <classifier>mule-plugin</classifier>
         </dependency>
     </dependencies>
