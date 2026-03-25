@@ -90,15 +90,6 @@ jobs:
               }
             ]
 
-      - name: Set App Tag
-        run: |
-          MULE_ENV=$(echo '${{ inputs.environment }}' | tr '[:upper:]' '[:lower:]')
-          if [[ "$MULE_ENV" == "dev" ]]; then
-            echo "APP_TAG=-$MULE_ENV" >> $GITHUB_ENV
-          else
-            echo "APP_TAG=" >> $GITHUB_ENV
-          fi
-
       - name: Publish Artifact to Anypoint Exchange
         run: |
           mvn clean deploy -DskipTests \
