@@ -4,7 +4,7 @@
     
     <groupId>ce235d46-115c-497c-b0e2-474afd80f5e9</groupId>
     <artifactId>most-important-sys-api</artifactId>
-    <version>1.0.13</version>
+    <version>1.0.14</version>
     <packaging>mule-application</packaging>
     
     <name>most-important-sys-api</name>
@@ -48,7 +48,7 @@
                         <connectedAppClientId>${connectedAppClientId}</connectedAppClientId>
                         <connectedAppClientSecret>${connectedAppClientSecret}</connectedAppClientSecret>
                         <connectedAppGrantType>client_credentials</connectedAppGrantType>
-                        <applicationName>most-important-sys-${mule.env.lower}-${deployment.region}-api</applicationName>
+                        <applicationName>most-important-sys-${mule.env.lower}-us-east-1-api</applicationName>
                         <vCores>${app.vCores}</vCores>
                         <replicas>${app.replicas}</replicas>
                         <deploymentSettings>
