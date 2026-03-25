@@ -4,7 +4,7 @@
     
     <groupId>ce235d46-115c-497c-b0e2-474afd80f5e9</groupId>
     <artifactId>most-important-sys-api</artifactId>
-    <version>1.0.12</version>
+    <version>1.0.13</version>
     <packaging>mule-application</packaging>
     
     <name>most-important-sys-api</name>
@@ -19,7 +19,6 @@
         <deployment.mule.version>4.9.4</deployment.mule.version>
         <deployment.java.version>17</deployment.java.version>
         <deployment.release.channel>LTS</deployment.release.channel>
-        <deployment.application.name>most-important-sys-${mule.env.lower}-${deployment.region}-api</deployment.application.name>
         <deployment.forward.ssl.session>false</deployment.forward.ssl.session>
         <deployment.last.mile.security>false</deployment.last.mile.security>
         <deployment.generate.public.url>false</deployment.generate.public.url>
@@ -49,7 +48,7 @@
                         <connectedAppClientId>${connectedAppClientId}</connectedAppClientId>
                         <connectedAppClientSecret>${connectedAppClientSecret}</connectedAppClientSecret>
                         <connectedAppGrantType>client_credentials</connectedAppGrantType>
-                        <applicationName>${deployment.application.name}</applicationName>
+                        <applicationName>most-important-sys-${mule.env.lower}-${deployment.region}-api</applicationName>
                         <vCores>${app.vCores}</vCores>
                         <replicas>${app.replicas}</replicas>
                         <deploymentSettings>
