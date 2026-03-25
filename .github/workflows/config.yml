@@ -90,13 +90,18 @@ jobs:
               }
             ]
 
+      - name: Prepare Naming Variables
+        run: |
+          ENV_LOWER=$(echo '${{ inputs.environment }}' | tr '[:upper:]' '[:lower:]')
+          echo "ENV_LOWER=$ENV_LOWER" >> $GITHUB_ENV
+
       - name: Publish Artifact to Anypoint Exchange
         run: |
           mvn clean deploy -DskipTests \
+          -D"mule.env.lower"="${{ env.ENV_LOWER }}" \
           -D"mule.env"="${{ env.ENVIRONMENT }}" \
           -D"app.vCores"="${{ inputs.vCore }}" \
           -D"app.replicas"="${{ inputs.replicas }}" \
-          -D"app.url.env"="${{ env.APP_TAG }}" \
           -D"anypoint.privatespace.name"="${{ env.TARGET }}" \
           -D"connectedAppClientId"="${{ env.CONNECTED_APP_CLIENT_ID }}" \
           -D"connectedAppClientSecret"="${{ env.CONNECTED_APP_CLIENT_SECRET }}" \
@@ -114,10 +119,10 @@ jobs:
       - name: Deploy Application to CloudHub 2.0
         run: |
           mvn mule:deploy -DskipTests \
+          -D"mule.env.lower"="${{ env.ENV_LOWER }}" \
           -D"mule.env"="${{ env.ENVIRONMENT }}" \
           -D"app.vCores"="${{ inputs.vCore }}" \
           -D"app.replicas"="${{ inputs.replicas }}" \
-          -D"app.url.env"="${{ env.APP_TAG }}" \
           -D"anypoint.privatespace.name"="${{ env.TARGET }}" \
           -D"connectedAppClientId"="${{ env.CONNECTED_APP_CLIENT_ID }}" \
           -D"connectedAppClientSecret"="${{ env.CONNECTED_APP_CLIENT_SECRET }}" \
