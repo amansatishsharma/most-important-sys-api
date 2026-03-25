@@ -44,7 +44,7 @@ on:
 run-name: "Deploying ${{ inputs.repository }} to ${{ inputs.environment }}"
 
 jobs:
-  Deploy to CloudHub 2.0:
+  Deploy-to-CloudHub:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
